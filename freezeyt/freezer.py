@@ -6,7 +6,7 @@ import itertools
 import functools
 import base64
 import dataclasses
-from typing import Optional
+from typing import Optional, List, Tuple, Iterator
 import enum
 
 from urllib.parse import urljoin
@@ -380,3 +380,8 @@ class Freezer:
         hook = self.hooks.get(hook_name)
         if hook:
             hook(*arguments)
+
+    def drain_links(self, file_path: Path,
+                    url: str, headers: List[Tuple]) -> Iterator[str]:
+
+        pass
