@@ -351,9 +351,9 @@ class Freezer:
             else:
                 close()
 
-            self.get_links_by_type(task.path, url_string, task.response_headers)
+            self.get_links_by_type(file_path, url_string, task.response_headers)
 
-            with self.saver.open_filename(task.path) as f:
+            with self.saver.open_filename(file_path) as f:
                 content_type = task.response_headers.get('Content-Type')
                 cont_type, cont_encode = parse_options_header(content_type)
                 if cont_type == "text/html":
@@ -386,5 +386,7 @@ class Freezer:
 
     def get_links_by_type(self, file_path: Path,
                           url: str, headers: List[Tuple]) -> Iterator[str]:
+        with self.saver.open_filename(file_path) as f:
+            content_type = task.response_headers.get('Content-Type')
 
-        pass
+            return [f.read()]

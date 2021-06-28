@@ -8,7 +8,8 @@ INPUT_DATA = [
     (
         (io.BytesIO(b"<a href='/second_page.html'>LINK</a>"),
         "http://localhost:8000/",
-        [('Content-Type', 'text/html; charset=utf-8')]),
+        [('Content-Type', 'text/html; charset=utf-8')],
+        "text/hmtl"),
         ['/second_page.html']
     )
 
@@ -17,7 +18,7 @@ INPUT_DATA = [
 
 @pytest.mark.parametrize("values, expected", INPUT_DATA)
 def test_get_links_by_content_type(monkeypatch, values, expected):
-    file, url, headers = values
+    file, url, headers, config_type = values
 
     monkeypatch.setattr(
         'freezeyt.filesaver.FileSaver.open_filename', lambda _: file)
