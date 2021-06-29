@@ -32,6 +32,23 @@ def get_html_links(
 
     base_url is the URL of the page.
     """
+
+    def get_links_from_node(node: xml.dom.minidom.Node, base_url) -> list:
+        """Get all links from xml.dom.minidom Node."""
+        result = []
+        if 'href' in node.attrib:
+            href = decode_input_path(node.attrib['href'])
+            full_url = urljoin(base_url, href)
+            result.append(full_url)
+        if 'src' in node.attrib:
+            href = decode_input_path(node.attrib['src'])
+            full_url = urljoin(base_url, href)
+            result.append(full_url)
+        for child in node:
+            result.extend(get_links_from_node(child, base_url))
+        return result
+
+
     if headers == None:
         cont_charset = None
     else:
@@ -40,19 +57,3 @@ def get_html_links(
         cont_charset = cont_options.get('charset')
     document = html5lib.parse(page_content, transport_encoding=cont_charset)
     return get_links_from_node(document, base_url)
-
-
-def get_links_from_node(node: xml.dom.minidom.Node, base_url) -> list:
-    """Get all links from xml.dom.minidom Node."""
-    result = []
-    if 'href' in node.attrib:
-        href = decode_input_path(node.attrib['href'])
-        full_url = urljoin(base_url, href)
-        result.append(full_url)
-    if 'src' in node.attrib:
-        href = decode_input_path(node.attrib['src'])
-        full_url = urljoin(base_url, href)
-        result.append(full_url)
-    for child in node:
-        result.extend(get_links_from_node(child, base_url))
-    return result
