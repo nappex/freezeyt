@@ -532,6 +532,19 @@ class Freezer:
                 )
                 # compare if source path and final path of redirect are same
                 if redirect_path == task.path:
+                    print(f"{task.urls_redirecting_self=}")
+                    print(f"{redirect_url=}")
+                    print(f"{url=}")
+                    print(f"{task.urls=}")
+                    print(f"{redirect_path=}")
+                    print(f"{task.path=}")
+                    print(10*"-")
+                    if redirect_url in task.urls:
+                        # add redirect_url
+                        # only because of InfiniteRedirection
+                        # which need it to run
+                        task.redirects_to = redirect_url
+                        raise InfiniteRedirection(task)
                     task.urls.add(redirect_url)
                     task.urls_redirecting_self.add(url)
                     raise RedirectToSamePath()
